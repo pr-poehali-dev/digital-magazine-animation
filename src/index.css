@@ -99,3 +99,47 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .perspective-\[2000px\] {
+    perspective: 2000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  @keyframes flip-next {
+    0% {
+      transform: rotateY(0deg);
+    }
+    100% {
+      transform: rotateY(-180deg);
+    }
+  }
+
+  @keyframes flip-prev {
+    0% {
+      transform: rotateY(-180deg);
+    }
+    100% {
+      transform: rotateY(0deg);
+    }
+  }
+
+  .animate-flip-next {
+    animation: flip-next 0.8s ease-in-out forwards;
+  }
+
+  .animate-flip-prev {
+    animation: flip-prev 0.8s ease-in-out forwards;
+  }
+
+  .duration-800 {
+    transition-duration: 800ms;
+  }
+}
