@@ -11,15 +11,12 @@ const MagazineViewer = () => {
   const [isFlipping, setIsFlipping] = useState(false);
   const [flipDirection, setFlipDirection] = useState<'next' | 'prev' | null>(null);
 
-  // ВСТАВЬТЕ СВОИ ФОТОГРАФИИ ЗДЕСЬ
-  // Замените URL на ссылки к вашим изображениям
   const pages: Page[] = [
-    { id: 1, imageUrl: 'https://cdn.poehali.dev/projects/65778a68-31aa-4826-aaac-fac7d4ba89a4/files/17e3a542-1063-4146-9d0b-8f863c175719.jpg' },
-    { id: 2, imageUrl: 'https://cdn.poehali.dev/projects/65778a68-31aa-4826-aaac-fac7d4ba89a4/files/3cd0dc47-6f5c-468d-b090-03abf147227f.jpg' },
-    { id: 3, imageUrl: 'https://cdn.poehali.dev/projects/65778a68-31aa-4826-aaac-fac7d4ba89a4/files/30895ff5-cbe0-419a-94a3-ae44ed1572b1.jpg' },
-    { id: 4, imageUrl: 'https://cdn.poehali.dev/projects/65778a68-31aa-4826-aaac-fac7d4ba89a4/files/17e3a542-1063-4146-9d0b-8f863c175719.jpg' },
-    { id: 5, imageUrl: 'https://cdn.poehali.dev/projects/65778a68-31aa-4826-aaac-fac7d4ba89a4/files/3cd0dc47-6f5c-468d-b090-03abf147227f.jpg' },
-    { id: 6, imageUrl: 'https://cdn.poehali.dev/projects/65778a68-31aa-4826-aaac-fac7d4ba89a4/files/30895ff5-cbe0-419a-94a3-ae44ed1572b1.jpg' },
+    { id: 1, imageUrl: 'https://cdn.poehali.dev/files/Без имени-1 (2).png' },
+    { id: 2, imageUrl: 'https://cdn.poehali.dev/files/22.png' },
+    { id: 3, imageUrl: 'https://cdn.poehali.dev/files/88.png' },
+    { id: 4, imageUrl: 'https://cdn.poehali.dev/files/880.png' },
+    { id: 5, imageUrl: 'https://cdn.poehali.dev/files/66.png' },
   ];
 
   const handleNextPage = () => {
@@ -65,18 +62,10 @@ const MagazineViewer = () => {
         {/* Основа журнала */}
         <div className="absolute inset-0 bg-white rounded-sm shadow-2xl transform-gpu preserve-3d">
           
-          {/* Левая страница (предыдущая) */}
-          <div className="absolute left-0 top-0 w-1/2 h-full overflow-hidden">
-            {currentPage > 0 && (
-              <img
-                src={pages[currentPage - 1].imageUrl}
-                alt={`Page ${currentPage}`}
-                className="w-full h-full object-cover"
-              />
-            )}
-          </div>
+          {/* Левая страница (всегда пустая белая) */}
+          <div className="absolute left-0 top-0 w-1/2 h-full bg-white" />
 
-          {/* Правая страница (текущая) */}
+          {/* Правая страница (текущая фотография) */}
           <div 
             className={`absolute right-0 top-0 w-1/2 h-full overflow-hidden origin-left transform-gpu transition-all duration-800 ease-in-out preserve-3d ${
               flipDirection === 'next' 
