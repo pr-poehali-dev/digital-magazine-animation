@@ -10,6 +10,7 @@ const MagazineViewer = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [isFlipping, setIsFlipping] = useState(false);
   const [flipDirection, setFlipDirection] = useState<'next' | 'prev' | null>(null);
+  const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set());
 
   const pages: Page[] = [
     { id: 1, imageUrl: 'https://cdn.poehali.dev/files/Без имени-1 (2).png' },
@@ -19,6 +20,16 @@ const MagazineViewer = () => {
     { id: 5, imageUrl: 'https://cdn.poehali.dev/files/66.png' },
   ];
 
+  useEffect(() => {
+    pages.forEach((page, index) => {
+      const img = new Image();
+      img.src = page.imageUrl;
+      img.onload = () => {
+        setImagesLoaded(prev => new Set(prev).add(index));
+      };
+    });
+  }, []);
+
   const handleNextPage = () => {
     if (currentPage < pages.length - 1 && !isFlipping) {
       setFlipDirection('next');
@@ -27,7 +38,7 @@ const MagazineViewer = () => {
         setCurrentPage(currentPage + 1);
         setIsFlipping(false);
         setFlipDirection(null);
-      }, 800);
+      }, 1200);
     }
   };
 
@@ -39,7 +50,7 @@ const MagazineViewer = () => {
         setCurrentPage(currentPage - 1);
         setIsFlipping(false);
         setFlipDirection(null);
-      }, 800);
+      }, 1200);
     }
   };
 
@@ -67,7 +78,7 @@ const MagazineViewer = () => {
 
           {/* Правая страница (текущая фотография) */}
           <div 
-            className={`absolute right-0 top-0 w-1/2 h-full overflow-hidden origin-left transform-gpu transition-all duration-800 ease-in-out preserve-3d ${
+            className={`absolute right-0 top-0 w-1/2 h-full overflow-hidden origin-left transform-gpu preserve-3d backface-hidden ${
               flipDirection === 'next' 
                 ? 'animate-flip-next' 
                 : flipDirection === 'prev'
@@ -76,12 +87,21 @@ const MagazineViewer = () => {
             }`}
             style={{
               transformStyle: 'preserve-3d',
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
+              willChange: 'transform',
             }}
           >
             <img
               src={pages[currentPage].imageUrl}
               alt={`Page ${currentPage + 1}`}
               className="w-full h-full object-cover"
+              style={{
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+              }}
+              loading="eager"
+              decoding="async"
             />
           </div>
 
@@ -122,11 +142,23 @@ const MagazineViewer = () => {
         {pages.map((_, index) => (
           <div
             key={index}
-            className={`w-2 h-2 rounded-full transition-all ${
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
               index === currentPage 
                 ? 'bg-gray-800 w-8' 
                 : 'bg-gray-400'
             }`}
+          />
+        ))}
+      </div>
+
+      {/* Предзагрузка изображений */}
+      <div className="hidden">
+        {pages.map((page, index) => (
+          <img
+            key={page.id}
+            src={page.imageUrl}
+            alt={`Preload ${index}`}
+            loading="eager"
           />
         ))}
       </div>
